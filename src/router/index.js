@@ -59,71 +59,76 @@ export const constantRoutes = [
   {
     path: '/single-condition',
     component: Layout,
-    redirect: '/single-condition/time',
+    // redirect: '/single-condition/time',
     name: 'SingleCondition',
-    meta: { title: '单条件查询', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'time',
-        name: 'Time',
-        component: () => import('@/views/single-condition/time/index'),
-        meta: { title: '按照时间进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'name',
-        name: 'Name',
-        component: () => import('@/views/single-condition/name/index'),
-        meta: { title: '按照电影名称进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'director',
-        name: 'Director',
-        component: () => import('@/views/single-condition/director/index'),
-        meta: { title: '按照导演进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'writer',
-        name: 'Writer',
-        component: () => import('@/views/single-condition/writer/index'),
-        meta: { title: '按照编剧进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'actor',
-        name: 'Actor',
-        component: () => import('@/views/single-condition/actor/index'),
-        meta: { title: '按照演员进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'relationship',
-        name: 'Relationship',
-        component: () => import('@/views/single-condition/relationship/index'),
-        meta: { title: '按照演员和导演的关系进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'genre',
-        name: 'Genre',
-        component: () => import('@/views/single-condition/genre/index'),
-        meta: { title: '按照电影类别进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'rating',
-        name: 'Rating',
-        component: () => import('@/views/single-condition/rating/index'),
-        meta: { title: '按照用户评价进行查询及统计', icon: 'table' }
-      },
-      {
-        path: 'review',
-        name: 'Review',
-        component: () => import('@/views/single-condition/review/index'),
-        meta: { title: '按照电影名称进行评论的查询及统计', icon: 'table' }
-      },
-      {
-        path: 'version',
-        name: 'Version',
-        component: () => import('@/views/single-condition/version/index'),
-        meta: { title: '查询电影版本', icon: 'table' }
-      },
-    ]
+    children: [{
+      path: 'muti-condition',
+      name: 'MutiCondition',
+      component: () => import('@/views/single-condition/director/index'),
+      meta: { title: '单实体查询', icon: 'el-icon-s-help' },
+    }],
+    // children: [
+    //   {
+    //     path: 'time',
+    //     name: 'Time',
+    //     component: () => import('@/views/single-condition/time/index'),
+    //     meta: { title: '按照时间进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'name',
+    //     name: 'Name',
+    //     component: () => import('@/views/single-condition/name/index'),
+    //     meta: { title: '按照电影名称进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'director',
+    //     name: 'Director',
+    //     component: () => import('@/views/single-condition/director/index'),
+    //     meta: { title: '按照导演进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'writer',
+    //     name: 'Writer',
+    //     component: () => import('@/views/single-condition/writer/index'),
+    //     meta: { title: '按照编剧进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'actor',
+    //     name: 'Actor',
+    //     component: () => import('@/views/single-condition/actor/index'),
+    //     meta: { title: '按照演员进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'relationship',
+    //     name: 'Relationship',
+    //     component: () => import('@/views/single-condition/relationship/index'),
+    //     meta: { title: '按照演员和导演的关系进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'genre',
+    //     name: 'Genre',
+    //     component: () => import('@/views/single-condition/genre/index'),
+    //     meta: { title: '按照电影类别进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'rating',
+    //     name: 'Rating',
+    //     component: () => import('@/views/single-condition/rating/index'),
+    //     meta: { title: '按照用户评价进行查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'review',
+    //     name: 'Review',
+    //     component: () => import('@/views/single-condition/review/index'),
+    //     meta: { title: '按照电影名称进行评论的查询及统计', icon: 'table' }
+    //   },
+    //   {
+    //     path: 'version',
+    //     name: 'Version',
+    //     component: () => import('@/views/single-condition/version/index'),
+    //     meta: { title: '查询电影版本', icon: 'table' }
+    //   },
+    // ]
   },
 
   {
@@ -133,7 +138,18 @@ export const constantRoutes = [
       path: 'muti-condition',
       name: 'MutiCondition',
       component: () => import('@/views/muti-condition/index'),
-      meta: { title: '多条件查询', icon: 'dashboard' }
+      meta: { title: '多实体查询', icon: 'dashboard' }
+    }]
+  },
+
+  {
+    path: '/fields-condition',
+    component: Layout,
+    children: [{
+      path: 'muti-condition',
+      name: 'MutiCondition',
+      component: () => import('@/views/single-condition/genre/index'),
+      meta: { title: '根据领域查询', icon: 'dashboard' }
     }]
   },
   
