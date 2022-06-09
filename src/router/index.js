@@ -64,7 +64,7 @@ export const constantRoutes = [
     children: [{
       path: 'muti-condition',
       name: 'MutiCondition',
-      component: () => import('@/views/single-condition/director/index'),
+      component: () => import('@/views/single-entity/index'),
       meta: { title: '单实体查询', icon: 'el-icon-s-help' },
     }],
     // children: [
