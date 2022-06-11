@@ -169,6 +169,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.draw()
       let queryName='';
       if(this.formPaperMark){
         queryName=this.form.entity.paper
@@ -210,14 +211,29 @@ export default {
           category1: this.formMark.entity,
           name2: queryName2,
           category2: this.formMark.entity2,
-          limit: 5
+          limit: 20000
         }
       })
       .then((response)=>{
         this.links=response.data.links;
         this.nodes=response.data.nodes;
 
-        console.log(response.data)
+        // this.nodes[0].fixed = true;
+        this.nodes[0].x = 250;
+        this.nodes[0].y = 200;
+        // this.nodes[0].draggable=false;
+        this.nodes[0].symbolSize = 50;
+        this.nodes[0].gravity = 0;
+
+        // this.nodes[1].fixed = true;
+        this.nodes[1].x = 980;
+        this.nodes[1].y = 200;
+        // this.nodes[1].draggable=false;
+        this.nodes[1].symbolSize = 50;
+        this.nodes[1].gravity = 0;
+
+        console.log(this.nodes);
+
         this.querySucceed();
 
         this.draw();
@@ -228,12 +244,15 @@ export default {
       });
     },
     draw(){
-      // 初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById('myChart'))
+      if(this.draw.myChart==null){ 
+        // 初始化echarts实例
+        this.draw.myChart = this.$echarts.init(document.getElementById('myChart'));
+        this.draw.status=false;
+      }
       // 指定图表的配置项和数据
       var option = {
         legend: {
-          data: ['paper', 'author', 'affiliation', 'interest', 'venue']
+          data: ['paper', 'author', 'affiliation', 'interest', 'publication']
         },
         series: [
           {
@@ -241,16 +260,23 @@ export default {
             layout: 'force',
             symbolSize:30,
             force: {
-              edgeLength: 100,
-              repulsion: 300,
-              gravity: 0.7
+              edgeLength: [100, 200],
+              repulsion: 500,
+              gravity: 0.1
             },
             animation: false,
             // labelLayout: {
             //   hideOverlap: true
             // },
             draggable: true,
-            data: this.nodes,
+            data: this.nodes.map((node,index)=>{
+              return {
+                name:node.index,
+                category:node.category,
+                value: node.name,
+              }
+            }),
+            
             categories: [
               {
                 "name": "paper",
@@ -271,7 +297,7 @@ export default {
                 "base": ""
               },
               {
-                "name": "venue",
+                "name": "publication",
                 "keyword": {}
               }
             ],
@@ -281,33 +307,30 @@ export default {
               blurScope: 'series',
               label: {
                 position: 'right',
+                formatter: '{c}',
                 show: true
               },
               edgeLabel:{
                 show: true,
-                position: 'middle',
-                formatter: '{b}',
-                fontSize: 20
+                formatter: '{c}',
+                align:'center',
               },
             },
-            edges: this.links
-            // .map((link)=>{
-            //   return {
-            //     source:link.source,
-            //     target:link.target,
-            //     name: link.label,
-            //     label:{
-            //       position: 'middle',
-            //       formatter: '{b}',
-            //     }
-            //   }
-            // }),
+            edgeSymbol: ['circle', 'arrow'],
+            edgeSymbolSize: [4, 10],
+            edges: this.links.map((link)=>{
+              return {
+                source:link.source,
+                target:link.target,
+                value: link.label,
+              }
+            }),
           }
         ]
       };
       //防止越界，重绘canvas
       // window.onresize = myChart.resize;
-      myChart.setOption(option);//设置option
+      this.draw.myChart.setOption(option);//设置option
     },
     querySucceed() {
       this.$notify({

@@ -156,18 +156,25 @@ export default {
         params: {
           name: queryName,
           category: this.formMark.entity,
-          limit: 5
+          limit: 200000
         }
       })
       .then((response)=>{
         this.links=response.data.links;
         this.nodes=response.data.nodes;
 
+        // this.nodes[0].fixed = true;
+        this.nodes[0].x = 250;
+        this.nodes[0].y = 200;
+        // this.nodes[0].draggable=false;
+        this.nodes[0].symbolSize = 50;
+        this.nodes[0].gravity = 0;
+
         this.tableData=[];
         for(let i=0; i<this.links.length; ++i){
           this.tableData.push({
-            name: this.nodes[this.links[i].target].name,
-            category: this.nodes[this.links[i].target].category,
+            name: this.nodes[this.links[i].target+this.links[i].source].name,
+            category: this.nodes[this.links[i].target+this.links[i].source].category,
             relationship: this.links[i].label
           })
         }
@@ -187,7 +194,7 @@ export default {
       // 指定图表的配置项和数据
       var option = {
         legend: {
-          data: ['paper', 'author', 'affiliation', 'interest', 'venue']
+          data: ['paper', 'author', 'affiliation', 'interest', 'publication']
         },
         series: [
           {
@@ -195,9 +202,9 @@ export default {
             layout: 'force',
             symbolSize:30,
             force: {
-              edgeLength: 100,
-              repulsion: 300,
-              gravity: 0.7
+              edgeLength: [50, 75],
+              repulsion: 500,
+              gravity: 0.1
             },
             animation: false,
             // labelLayout: {
@@ -225,7 +232,7 @@ export default {
                 "base": ""
               },
               {
-                "name": "venue",
+                "name": "publication",
                 "keyword": {}
               }
             ],
@@ -239,23 +246,19 @@ export default {
               },
               edgeLabel:{
                 show: true,
-                position: 'middle',
-                formatter: '{b}',
-                fontSize: 20
+                formatter: '{c}',
+                align:'center',
               },
             },
-            edges: this.links
-            // .map((link)=>{
-            //   return {
-            //     source:link.source,
-            //     target:link.target,
-            //     name: link.label,
-            //     label:{
-            //       position: 'middle',
-            //       formatter: '{b}',
-            //     }
-            //   }
-            // }),
+            edgeSymbol: ['circle', 'arrow'],
+            edgeSymbolSize: [4, 10],
+            edges: this.links.map((link)=>{
+              return {
+                source:link.source,
+                target:link.target,
+                value: link.label,
+              }
+            }),
           }
         ]
       };

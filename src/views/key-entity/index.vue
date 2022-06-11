@@ -22,7 +22,8 @@
             <el-col :span="6" style="margin-left:-25px">
               <div class="grid-content">
                 <el-select v-model="formMark" placeholder="">
-                  <el-option label="作者和单位" value="author" />
+                  <el-option label="作者" value="author" />
+                  <el-option label="单位" value="affiliation" />
                   <el-option label="学术刊物/会议" value="venue" />
                 </el-select>
               </div>
@@ -90,6 +91,9 @@ export default {
       let queryUrl='';
       if(this.formMark=='author'){
         queryUrl='query/author_rank'
+      }
+      else if(this.formMark=='affiliation'){
+        queryUrl='query/affiliation_rank'
       }
       else if(this.formMark=='venue'){
         queryUrl='query/publication_rank'

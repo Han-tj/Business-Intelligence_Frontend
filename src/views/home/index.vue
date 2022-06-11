@@ -3,7 +3,7 @@
     <Card>
       <p slot="title" class="card-title">
           <Icon type="home"></Icon>
-          <span>数据仓库大项目</span>
+          <span>商务智能大项目</span>
       </p>
       <div>
         <h2>数据来源:</h2>

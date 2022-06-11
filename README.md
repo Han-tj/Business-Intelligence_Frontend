@@ -47,10 +47,3 @@ npm run lint
 npm run lint -- --fix
 ```
 
-## 本项目对应后端地址
-
-```bash
-# 克隆项目
-git clone https://github.com/Shishouge/DataWare-House.git
-
-```
