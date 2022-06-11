@@ -1,9 +1,14 @@
 <template>
   <div class="app-container">
-    <el-card style="width:100%; margin:0 auto; padding-top: 20px">
+    <el-card style="width:100%; margin:0 auto; padding-top: 10px; padding-bottom: 0px;">
       <el-form ref="form" :model="form" label-width="120px">
-        <el-form-item label="实体">
+        <el-form-item label="">
           <el-row :gutter="10">
+            <el-col :span="1">
+              <div class="grid-content">
+                实体1
+              </div>
+            </el-col>
             <el-col :span="6">
               <div class="grid-content">
                 <el-select v-model="formMark.entity" placeholder="">
@@ -40,54 +45,61 @@
                 <el-input v-model="form.entity.venue" placeholder="请输入刊物/会议名称" />
               </div>
             </el-col>
+          </el-row>
+          <el-row :gutter="10" style="margin-top: 15px">
+            <el-col :span="1">
+              <div class="grid-content">
+                实体2
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content">
+                <el-select v-model="formMark.entity2" placeholder="">
+                  <el-option label="论文" value="paper" />
+                  <el-option label="作者" value="author" />
+                  <el-option label="研究主题" value="interest" />
+                  <el-option label="研究机构" value="affiliation" />
+                  <el-option label="学术刊物/会议" value="venue" />
+                </el-select>
+              </div>
+            </el-col>
+            <el-col :span="12" v-if="formPaperMark2">
+              <div class="grid-content">
+                <el-input v-model="form.entity2.paper" placeholder="请输入论文标题" />
+              </div>
+            </el-col>
+            <el-col :span="12" v-if="formAuthorMark2">
+              <div class="grid-content">
+                <el-input v-model="form.entity2.author" placeholder="请输入作者名称" />
+              </div>
+            </el-col>
+            <el-col :span="12" v-if="formInterestMark2">
+              <div class="grid-content">
+                <el-input v-model="form.entity2.interest" placeholder="请输入研究主题" />
+              </div>
+            </el-col>
+            <el-col :span="12" v-if="formAffiliationMark2">
+              <div class="grid-content">
+                <el-input v-model="form.entity2.affiliation" placeholder="请输入机构名称" />
+              </div>
+            </el-col>
+            <el-col :span="12" v-if="formVenueMark2">
+              <div class="grid-content">
+                <el-input v-model="form.entity2.venue" placeholder="请输入刊物/会议名称" />
+              </div>
+            </el-col>
             <el-col :span="2" :push="1" >
               <div class="grid-content">
                 <el-button type="primary" @click="onSubmit">查询</el-button>
               </div>
             </el-col>
-          </el-row>     
+          </el-row>      
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card style="width:100%; margin:0.7% auto; height: 440px;">
+    <el-card style="width:100%; margin:0.7% auto; height: 400px;">
       <el-row>
-        <el-col :span="11"><div class="grid-content">
-          <el-table
-            :data="tableData"
-            :stripe="true"
-            height="370"
-            :highlight-current-row='true'
-            style="width: 95%; margin: 0; height: 330px;">
-            <el-table-column
-              prop="name"
-              label="名称"
-              align='center'
-              width="300">
-            </el-table-column>
-            <el-table-column
-              prop="category"
-              label="类别"
-              align='center'
-              width="90">
-            </el-table-column>
-            <el-table-column
-              prop="relationship"
-              label="与实体的关系"
-              align='center'>
-            </el-table-column>
-          </el-table>
-          <el-pagination
-            layout="total"
-            style="margin: 0 auto;"
-            :total="tableData.length">
-          </el-pagination>
-        </div></el-col>
-
-        <el-col :span="1"><div class="grid-content">
-          <el-divider direction="vertical" style="height: 420px;"></el-divider>
-        </div></el-col>
-
-        <el-col :span="12"><div class="grid-content">
+        <el-col :span="24"><div class="grid-content">
           <div id="myChart" :style="{width: '100%', height: '400px'}"></div>
         </div></el-col>
       </el-row>
@@ -109,11 +121,18 @@ export default {
           affiliation:'',
           venue:''
         },
+        entity2:{
+          paper:'',
+          author:'',
+          interest:'',
+          affiliation:'',
+          venue:''
+        },
       },
       formMark:{
         entity: 'paper',
+        entity2: 'paper',
       },
-      tableData: [],
     }
   },
   computed:{
@@ -131,6 +150,21 @@ export default {
     },
     formVenueMark(){
       return this.formMark.entity=="venue";
+    },
+    formPaperMark2(){
+      return this.formMark.entity2=="paper";
+    },
+    formAuthorMark2(){
+      return this.formMark.entity2=="author";
+    },
+    formInterestMark2(){
+      return this.formMark.entity2=="interest";
+    },
+    formAffiliationMark2(){
+      return this.formMark.entity2=="affiliation";
+    },
+    formVenueMark2(){
+      return this.formMark.entity2=="venue";
     },
   },
   methods: {
@@ -151,11 +185,31 @@ export default {
       else if(this.formVenueMark){
         queryName=this.form.entity.venue
       }
+
+      let queryName2='';
+      if(this.formPaperMark2){
+        queryName2=this.form.entity2.paper
+      }
+      else if(this.formAuthorMark2){
+        queryName2=this.form.entity2.author
+      }
+      else if(this.formInterestMark2){
+        queryName2=this.form.entity2.interest
+      }
+      else if(this.formAffiliationMark2){
+        queryName2=this.form.entity2.affiliation
+      }
+      else if(this.formVenueMark2){
+        queryName2=this.form.entity2.venue
+      }
+
       this.$axios
-      .get("query/single", {
+      .get("query/double", {
         params: {
-          name: queryName,
-          category: this.formMark.entity,
+          name1: queryName,
+          category1: this.formMark.entity,
+          name2: queryName2,
+          category2: this.formMark.entity2,
           limit: 5
         }
       })
@@ -163,15 +217,7 @@ export default {
         this.links=response.data.links;
         this.nodes=response.data.nodes;
 
-        this.tableData=[];
-        for(let i=0; i<this.links.length; ++i){
-          this.tableData.push({
-            name: this.nodes[this.links[i].target].name,
-            category: this.nodes[this.links[i].target].category,
-            relationship: this.links[i].label
-          })
-        }
-
+        console.log(response.data)
         this.querySucceed();
 
         this.draw();
