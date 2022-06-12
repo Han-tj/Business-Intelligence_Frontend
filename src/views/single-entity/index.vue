@@ -203,7 +203,7 @@ export default {
             symbolSize:30,
             force: {
               edgeLength: [50, 75],
-              repulsion: 500,
+              repulsion: 300,
               gravity: 0.1
             },
             animation: false,
@@ -211,7 +211,22 @@ export default {
             //   hideOverlap: true
             // },
             draggable: true,
-            data: this.nodes,
+            data: this.nodes.map((node,index)=>{
+              if(index==0){
+                return{
+                  name:node.index,
+                  category:node.category,
+                  value: node.name,
+                  symbolSize: 50,
+                  gravity: 0,
+                }
+              }
+              return {
+                name:node.index,
+                category:node.category,
+                value: node.name,
+              }
+            }),
             categories: [
               {
                 "name": "paper",
@@ -242,6 +257,7 @@ export default {
               blurScope: 'series',
               label: {
                 position: 'right',
+                formatter: '{c}',
                 show: true
               },
               edgeLabel:{

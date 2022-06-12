@@ -108,6 +108,8 @@
 </template>
 
 <script>
+import { boolean } from 'yargs';
+
 export default {
   data() {
     return {
@@ -218,19 +220,19 @@ export default {
         this.links=response.data.links;
         this.nodes=response.data.nodes;
 
-        // this.nodes[0].fixed = true;
-        this.nodes[0].x = 250;
-        this.nodes[0].y = 200;
-        // this.nodes[0].draggable=false;
-        this.nodes[0].symbolSize = 50;
-        this.nodes[0].gravity = 0;
+        // // this.nodes[0].fixed = true;
+        // this.nodes[0].x = 250;
+        // this.nodes[0].y = 200;
+        // // this.nodes[0].draggable=false;
+        // this.nodes[0].symbolSize = 50;
+        // this.nodes[0].gravity = 0;
 
-        // this.nodes[1].fixed = true;
-        this.nodes[1].x = 980;
-        this.nodes[1].y = 200;
-        // this.nodes[1].draggable=false;
-        this.nodes[1].symbolSize = 50;
-        this.nodes[1].gravity = 0;
+        // // this.nodes[1].fixed = true;
+        // this.nodes[1].x = 980;
+        // this.nodes[1].y = 200;
+        // // this.nodes[1].draggable=false;
+        // this.nodes[1].symbolSize = 50;
+        // this.nodes[1].gravity = 0;
 
         console.log(this.nodes);
 
@@ -270,6 +272,30 @@ export default {
             // },
             draggable: true,
             data: this.nodes.map((node,index)=>{
+              if(index==0){
+                return{
+                  name:node.index,
+                  category:node.category,
+                  value: node.name,
+                  x: 250,
+                  y: 200,
+                  symbolSize: 50,
+                  fixed: true,
+                  gravity: 0,
+                }
+              }
+              else if(index==1){
+                return{
+                  name:node.index,
+                  category:node.category,
+                  value: node.name,
+                  x: 980,
+                  fixed: true,
+                  y: 200,
+                  symbolSize: 50,
+                  gravity: 0,
+                }
+              }
               return {
                 name:node.index,
                 category:node.category,
