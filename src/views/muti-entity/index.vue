@@ -280,7 +280,7 @@ export default {
                   x: 250,
                   y: 200,
                   symbolSize: 50,
-                  fixed: true,
+                  // fixed: true,
                   gravity: 0,
                 }
               }
@@ -290,7 +290,7 @@ export default {
                   category:node.category,
                   value: node.name,
                   x: 980,
-                  fixed: true,
+                  // fixed: true,
                   y: 200,
                   symbolSize: 50,
                   gravity: 0,
