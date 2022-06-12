@@ -1,14 +1,9 @@
 <template>
   <div class="app-container">
-    <el-card style="width:100%; margin:0 auto; padding-top: 10px; padding-bottom: 0px;">
+    <el-card style="width:100%; margin:0 auto; padding-top: 10px; padding-bottom: 0px; margin-top:5%; width:80%">
       <el-form ref="form" :model="form" label-width="120px">
-        <el-form-item label="">
+        <el-form-item label="实体1">
           <el-row :gutter="10">
-            <el-col :span="1">
-              <div class="grid-content">
-                实体1
-              </div>
-            </el-col>
             <el-col :span="6">
               <div class="grid-content">
                 <el-select v-model="formMark.entity" placeholder="">
@@ -45,13 +40,10 @@
                 <el-input v-model="form.entity.venue" placeholder="请输入刊物/会议名称" />
               </div>
             </el-col>
-          </el-row>
-          <el-row :gutter="10" style="margin-top: 15px">
-            <el-col :span="1">
-              <div class="grid-content">
-                实体2
-              </div>
-            </el-col>
+          </el-row>     
+        </el-form-item>
+        <el-form-item label="实体2">
+          <el-row :gutter="10">
             <el-col :span="6">
               <div class="grid-content">
                 <el-select v-model="formMark.entity2" placeholder="">
@@ -88,31 +80,55 @@
                 <el-input v-model="form.entity2.venue" placeholder="请输入刊物/会议名称" />
               </div>
             </el-col>
+          </el-row> 
+        </el-form-item>
+        <el-form-item label="最小跳数">
+          <el-row :gutter="10">
+            <el-col :span="20">
+              <el-input-number v-model="minHops" :min="1" :max="maxHops" label="最小跳数" style="width:90%"></el-input-number>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        <el-form-item label="最大跳数">
+          <el-row :gutter="10">
+            <el-col :span="20">
+              <el-input-number v-model="maxHops" :min="minHops" :max="10" label="最大跳数" style="width:90%"></el-input-number>
+            
+            </el-col>
+            
             <el-col :span="2" :push="1" >
               <div class="grid-content">
                 <el-button type="primary" @click="onSubmit">查询</el-button>
               </div>
             </el-col>
-          </el-row>      
+          </el-row>
+          
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card style="width:100%; margin:0.7% auto; height: 400px;">
-      <el-row>
+    
+    <el-dialog
+      title="查询结果"
+      :visible.sync="dialogVisible"
+      width="80%"
+      @open="open">
+      <!-- <el-card style="width:100%; margin:0.7% auto; height: 400px;"> -->
+      <el-row style="margin-top:-50px">
         <el-col :span="24"><div class="grid-content">
-          <div id="myChart" :style="{width: '100%', height: '400px'}"></div>
+          <div id="myChart" :style="{width: '100%', height: '440px'}"></div>
         </div></el-col>
       </el-row>
-    </el-card>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { boolean } from 'yargs';
-
 export default {
   data() {
     return {
+      dialogVisible: false,
+      minHops:1,
+      maxHops:1,
       nodes:[],
       links:[],
       form: {
@@ -171,7 +187,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.draw()
+      //this.draw()
       let queryName='';
       if(this.formPaperMark){
         queryName=this.form.entity.paper
@@ -213,7 +229,9 @@ export default {
           category1: this.formMark.entity,
           name2: queryName2,
           category2: this.formMark.entity2,
-          limit: 20000
+          limit: 20000,
+          minHops: this.minHops,
+          maxHops: this.maxHops
         }
       })
       .then((response)=>{
@@ -244,6 +262,7 @@ export default {
         this.queryFail();
         console.log(error)
       });
+      this.dialogVisible = true
     },
     draw(){
       if(this.draw.myChart==null){ 
@@ -378,9 +397,15 @@ export default {
       }
       return runtime;
     },
+    open(){
+      this.$nextTick(() => {
+        //  执行echarts方法
+          this.draw();
+        })
+    },
   },
   mounted(){
-    this.draw();
+    // this.draw();
   }
 }
 </script>
